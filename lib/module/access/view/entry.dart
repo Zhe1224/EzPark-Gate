@@ -16,15 +16,10 @@ class _EntryViewState extends PlateScannerPageBaseState{
       String plateNo = await worker.work(()=>widget.controller.logEntry(image))??"";
       if (plateNo.isEmpty) return;
       DateTime now=DateTime.now();
-      setState(() {
-        card=SuccessCard.make(plateNo,widget.controller.gate.name,now.hour,now.minute,now.second);
-        Future.delayed(const Duration(seconds:10),(){
-          setState(() {card=null;});
-        });
-      });
+       setCard(SuccessCard.make(plateNo,widget.controller.gate.name,now.hour,now.minute,now.second));
     }catch (e){ switch (e){
         case BusyStateException _:return;
-        default: card=_displayErrorMessage(e.toString());
+        default: setCard(_displayErrorMessage(e.toString()));;
       }}});
   }
 

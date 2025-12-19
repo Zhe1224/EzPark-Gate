@@ -20,16 +20,11 @@ class _ExitViewState extends PlateScannerPageBaseState{
         if (inf?.plateNo==info.plateNo) return;
         setState(() {
           inf=info;
-          card=_displayExitSuccessMessage(info);
-          Future.delayed(const Duration(seconds:10),(){
-            setState(() {
-              card=null;
-            });
-          });
+          setCard(_displayExitSuccessMessage(info));
         });
       }catch (e){ switch (e){
           case BusyStateException _:return;
-          default: card=_displayErrorMessage(e.toString());
+          default: setCard(_displayErrorMessage(e.toString()));
         }}});
   }
 

@@ -43,6 +43,15 @@ abstract class PlateScannerPageBaseState extends State<PlateScannerPageBase>{
   }
 
   void start();
+
+  void setCard(Widget card){
+      setState(() {
+        this.card=card;
+        Future.delayed(const Duration(seconds:10),(){
+          setState(() {this.card=null;});
+        });
+      });
+  }
   
   @override
   Widget build(BuildContext context) {

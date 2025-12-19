@@ -34,7 +34,7 @@ class ParkingSession extends Model{
   }
 
   static Future<ParkingSession> put({required Plate plate, required Gate gate}) async {
-    final DateTime time=DateTime.parse(FieldValue.serverTimestamp().toString());
+    final DateTime time=DateTime.now();
     final [shopper as Shopper?,location as Location] = await Future.wait([
       plate.getShopper(),gate.getLocation()
     ]);

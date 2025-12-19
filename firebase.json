@@ -1,0 +1,53 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "parking-bf109",
+          "appId": "1:600608345420:android:3b433f17b881e2a5e553e9",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "parking-bf109",
+          "configurations": {
+            "android": "1:600608345420:android:3b433f17b881e2a5e553e9",
+            "ios": "1:600608345420:ios:cc8f4bfc3a04fe48e553e9",
+            "macos": "1:600608345420:ios:cc8f4bfc3a04fe48e553e9",
+            "web": "1:600608345420:web:f1c32d8de60f6c59e553e9",
+            "windows": "1:600608345420:web:9c5fea291fe4b52be553e9"
+          }
+        }
+      }
+    }
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "database": {
+      "port": 9000
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "pubsub": {
+      "port": 8085
+    },
+    "eventarc": {
+      "port": 9299
+    },
+    "tasks": {
+      "port": 9499
+    },
+    "ui": {
+      "enabled": true,
+      "port": 1919
+    },
+    "singleProjectMode": true
+  }
+}

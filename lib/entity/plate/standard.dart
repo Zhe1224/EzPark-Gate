@@ -11,8 +11,8 @@ class StandardPlate extends Plate {
 
   @override
   String toString() {
-    String output = _prefix + _space + _number;
-    if (_suffix.isNotEmpty) output += _space + _suffix;
+    String output = _prefix  + _number;
+    if (_suffix.isNotEmpty) output += _suffix;
     return output;
   }
 

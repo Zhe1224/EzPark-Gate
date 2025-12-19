@@ -15,7 +15,8 @@ export 'package:flutter/material.dart';
 abstract class PlateScannerPageBase extends StatefulWidget{
   static const title="Register Vehicle Entry";
   final AccessController controller;
-  const PlateScannerPageBase({super.key, required this.controller});
+  final CameraController camera;
+  const PlateScannerPageBase({super.key, required this.controller, required this.camera});
 
   @override
   State<PlateScannerPageBase> createState();
@@ -26,28 +27,18 @@ abstract class PlateScannerPageBaseState extends State<PlateScannerPageBase>{
   Widget? card;
   AsyncLock worker=AsyncLock();
 
-  late CameraController camera;
-  late Future<void> _initializeCameraFuture;
-
   @override
-  Future<void> initState() async {
+  void initState(){
     super.initState();
     // To display the current output from the Camera,
     // create a CameraController.
-    camera = CameraController(
-      // Get a specific camera from the list of available cameras.
-      (await Cameras.getCameras()).first,
-      // Define the resolution to use.
-      ResolutionPreset.high,
-    );
-    // Next, initialize the controller. This returns a Future.
-    _initializeCameraFuture = camera.initialize();
+    
   }
 
   @override
   void dispose() {
     // Dispose of the controller when the widget is disposed.
-    camera.dispose();
+    widget.camera.dispose();
     super.dispose();
   }
 
@@ -72,7 +63,7 @@ abstract class PlateScannerPageBaseState extends State<PlateScannerPageBase>{
           setState(() {
             logging=false;
           });
-          camera.stopImageStream();
+          widget.camera.stopImageStream();
         }, title: "Stop")
       );
     }
@@ -83,13 +74,13 @@ abstract class PlateScannerPageBaseState extends State<PlateScannerPageBase>{
         Stack(
           children:[
             FutureBuilder<void>(
-            future: _initializeCameraFuture,
+            future: Future.delayed(Duration(),()=>()),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 // If the Future is complete, display the preview.
                 return Stack(alignment: AlignmentGeometry.bottomCenter,
                 children:[
-                  CameraPreview(camera)
+                  CameraPreview(widget.camera)
                   ,Card(color:AppStyles.pageBackgroundColor,child:
                   Column(mainAxisSize: MainAxisSize.min,
                     children: [

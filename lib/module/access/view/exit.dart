@@ -4,7 +4,7 @@ import 'base.dart';
 
 class ExitView extends PlateScannerPageBase{
   static const title="Register Vehicle Exit";
-  const ExitView({super.key, required super.controller});
+  const ExitView({super.key, required super.controller, required super.camera});
   @override
   State<PlateScannerPageBase> createState() => _ExitViewState();
 }
@@ -13,7 +13,7 @@ class _ExitViewState extends PlateScannerPageBaseState{
   SessionInfo? inf;
   @override
   void start(){
-  camera.startImageStream((CameraImage image) async {
+  widget.camera.startImageStream((CameraImage image) async {
       try {
         SessionInfo? info = await worker.work(()=>widget.controller.logExit(image));
         if (info == null || info.plateNo == null || info.plateNo!.isEmpty) return;

@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import '../../entity/gate.dart';
+import '../../service/camera.dart';
 import '../../widgets/custom.dart';
 
 import 'controller.dart';
@@ -34,10 +35,6 @@ class AccessView extends StatefulWidget{
 // Import the camera package
 
 class _AccessViewState extends State<AccessView> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   void _displayPage(Widget page){
     Navigator.push(
@@ -48,12 +45,20 @@ class _AccessViewState extends State<AccessView> {
     );
   }
 
-  void _displayEntryScannerPage()  {
-    _displayPage(EntryView(controller: widget.controller));
+  void _displayEntryScannerPage() async {
+    await Cameras.getCameras().then((cams) async {
+      var camera = CameraController(cams.first,ResolutionPreset.high);
+      var _initializeCameraFuture = await camera.initialize();
+      _displayPage(EntryView(controller: widget.controller,camera:camera));
+    });
   }
 
-  void _displayExitScannerPage() {
-    _displayPage(ExitView(controller: widget.controller));
+  void _displayExitScannerPage() async{
+    await Cameras.getCameras().then((cams) async {
+      var camera = CameraController(cams.first,ResolutionPreset.high);
+      var _initializeCameraFuture = await camera.initialize();
+      _displayPage(ExitView(controller: widget.controller,camera:camera));
+    });
   }
 
   @override

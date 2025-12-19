@@ -47,19 +47,21 @@ class _AuthViewState extends State<AuthView>{
               ])),*/TextFormField(controller:username,decoration :InputDecoration(label: CustomText("Username")))
               ,TextFormField(controller:password,decoration :InputDecoration(label:CustomText("Password")),obscureText: true)
               ,CustomText(error??"")
-            ]),ConfirmButton(title: 'Login', onPressed: startLogin)
+            ]),ConfirmButton(title: 'Login', onPressed: (){push(AccessView.from(Gate(id:"cIeZVZUBAjN2kU89AxwO ",name:"abc@def.ghi",location:"K61LPhzP5nwwp0FYVbny")));})
           ]))),LoadingOverlay(isLoading: worker.busy)
     ]));
   }
 
   void startLogin(){
-    try{worker.work(login);}
+    try{login;}
     catch(e){setState(() {error=e.toString();
     });}
   }
 
-  Future<void> login() async {
+  void login() async {
+    /*Gate.login(username.text,password.text);*/
     Gate gate = await Gate.login(username.text,password.text);
+    /*Gate(id:"cIeZVZUBAjN2kU89AxwO ",name:"abc@def.ghi",location:"K61LPhzP5nwwp0FYVbny");*/
     push(AccessView.from(gate));
     /*
     IDPasswordPair creds=switch (role) {

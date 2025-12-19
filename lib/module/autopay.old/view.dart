@@ -5,14 +5,15 @@ import 'package:parking_gate/widgets/custom.dart';
 
 import '../../entity/payment_methods.dart' as me;
 import '../../utility/async_lock.dart';
+import '../../widgets/payment_method_card.dart';
 import 'controller.dart';
 
 class AutoPayView extends StatefulWidget{
   final String loginID;
   final AutoPayController controller;
   const AutoPayView._({super.key, required this.controller, required this.loginID}) ;
-  factory AutoPayView.from(Database database,String loginID,{Key? key}){
-    return AutoPayView._(controller: AutoPayController.get(db:database,loginID:loginID),key:key,loginID:loginID);
+  factory AutoPayView.from(String loginID,{Key? key}){
+    return AutoPayView._(controller: AutoPayController.get(loginID:loginID),key:key,loginID:loginID);
   }
   @override
   State<AutoPayView> createState()=> _AutoPayViewState();
@@ -46,7 +47,7 @@ class _AutoPayViewState extends State<AutoPayView> {
         CustomText(noMethod()
         ?"At least one payment method must be saved before Automatic Payment feature can be enabled."
         :"The first payment method will be charged first. Subsequent payment methods are charged only if previous payment methods fail to settle the payment.")]
-        ),Column(spacing:4,children: _paymentMethodEntries(context)),
+        ),Column(spacing:4,children: PaymentMethodCards(shopper: widget., worker: null,)),
         Row(spacing:4,mainAxisAlignment:MainAxisAlignment.spaceAround, children: [
           CustomButton(title: '<', onPressed: (){Navigator.pop(context);}),
           noMethod()?DisabledButton(title:"N/A",onPressed: (){}):

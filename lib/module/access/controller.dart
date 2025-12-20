@@ -18,7 +18,7 @@ class AccessController{
   AccessController({required this.gate});
 
   Future<String?> logEntry(CameraImage image) async {
-    return await _checkForPlate(image).then((Plate? plate)async{
+    return await _checkForPlate(image,true).then((Plate? plate)async{
       if(plate==null) return null;
       debugPrint('👤 Creating session for plate: $plate');
       await ParkingSession.put(plate:plate,gate:gate);
@@ -28,7 +28,7 @@ class AccessController{
 
   Future<SessionInfo?> logExit(CameraImage image) async {
     DateTime exitTime=DateTime.now();
-    Plate? plate = await  _checkForPlate(image);
+    Plate? plate = await  _checkForPlate(image,false);
     if(plate==null) return null;
     debugPrint('🚪 EXIT GATE: Processing plate: $plate');
     Shopper? owner;bool ownerLoaded=false;
@@ -52,11 +52,11 @@ class AccessController{
 
   final OCRService _ocr=OCRService.get();
 
-  Future<Plate?> _checkForPlate(CameraImage image) async {
+  Future<Plate?> _checkForPlate(CameraImage image,bool blockSame) async {
     try {
     Plate plate = Plate.parseText(await _ocr.extract(image));
     if (plate.toString().isEmpty) return null;
-    if (plate==plateNo) return null;
+    if (blockSame&&plate.toString()==plateNo.toString()) return null;
     plateNo=plate;
     return plate;
     } catch (e) {switch (e) {

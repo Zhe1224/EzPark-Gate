@@ -4,7 +4,7 @@ class Location extends Model{
   String name="";
   static Future<Location> get({ID? id})async
   =>id==null?Location._(name: 'Main Parking') 
-  :Location.fromItem({id:(await Model.database.collection('users').doc(id).get()).data()!}.entries.single);
+  :Location.fromItem({id:(await Model.database.collection('parking_locations').doc(id).get()).data()!}.entries.single);
 
   factory Location.fromItem(Item item) => Location._(
     id:item.key,

@@ -43,8 +43,8 @@ class AccessController{
     session.markPending();
     session.update();
     if (owner==null) throw Exception('Parking fee cannot be automatically paid as its owner is not member.');
-    try{await _feeProcessSequence(session,owner!);}
-    catch (e) {debugPrint('❌ Parking fee cannot be automatically paid. Owner should pay parking fees at kiosk or counter.');rethrow;}
+    /*try{await _feeProcessSequence(session,owner!);}
+    catch (e) {debugPrint('❌ Parking fee cannot be automatically paid. Owner should pay parking fees at kiosk or counter.');rethrow;}*/
     session.markCompleted();
     session.update();
     return SessionInfo.fromSession(session,owner);

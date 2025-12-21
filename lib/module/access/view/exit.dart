@@ -18,6 +18,7 @@ class _ExitViewState extends PlateScannerPageBaseState{
         SessionInfo? info = await worker.work(()=>widget.controller.logExit(image));
         if (info == null || info.plateNo == null || info.plateNo!.isEmpty) return;
         if (inf?.plateNo==info.plateNo) return;
+        worker.work((){return Future.delayed(Duration(seconds: 8));});
         setState(() {
           inf=info;
           setCard(_displayExitSuccessMessage(info));

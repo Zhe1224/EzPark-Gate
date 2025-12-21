@@ -40,7 +40,9 @@ abstract class Plate{
       .get().then((query){
         final doc=query.docs.singleOrNull;
         if (doc==null) return null;
-        return Shopper.fromMap(doc.data().putIfAbsent("id", ()=>doc.id));
+        final dat=doc.data();
+        dat.putIfAbsent("id", ()=>doc.id);
+        return Shopper.fromMap(dat);
       });
     }catch (e) {
       debugPrint('Error fetching shopper by plate: $e');

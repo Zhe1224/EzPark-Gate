@@ -1,5 +1,6 @@
 import 'entity.dart';
 import 'payment_methods.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; 
 
 class Shopper extends Model{
   final String email;
@@ -49,6 +50,20 @@ class Shopper extends Model{
 
   // Create from Firestore document
   factory Shopper.fromMap(Map<String, dynamic> map) {
+    // Helper to safely convert to DateTime
+    DateTime? toDateTime(dynamic value) {
+      if (value == null) return null;
+      if (value is Timestamp) return value.toDate();
+      if (value is String) {
+        try {
+          return DateTime.parse(value);
+        } catch (e) {
+          return null;
+        }
+      }
+      return null;
+    }
+    
     // Handle both old format (carPlate) and new format (carPlates)
     List<String> plates = [];
     if (map['carPlates'] != null) {
@@ -65,11 +80,11 @@ class Shopper extends Model{
       phone: map['phone'] ?? '',
       carPlate: map['carPlate'] ?? (plates.isNotEmpty ? plates.first : null),
       carPlates: plates,
-      createdAt: DateTime.parse(map['createdAt']),
-      updatedAt: map['updatedAt'] != null ? DateTime.parse(map['updatedAt']) : null,
-      isAdmin: map['isAdmin'] ?? false, // Default to false for existing users
+      createdAt: toDateTime(map['createdAt']) ?? DateTime.now(),  
+      updatedAt: toDateTime(map['updatedAt']),  
+      isAdmin: map['isAdmin'] ?? false,
       photoUrl: map['photoUrl'],
-      useAutoPay: map['useAutoPay'],
+      useAutoPay: map['useAutoPay'] ?? false, 
     );
   }
 
@@ -109,4 +124,3 @@ class Shopper extends Model{
     return PaymentMethods.fromItems(series.asMap().map((_,item)=>{item.id:item.data()}.entries.single));
   }
 }
-
